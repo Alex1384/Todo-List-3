@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoState,State} from '../../shared/store/todos.reducers';
-import { Observable } from 'rxjs';
+import { Observable, ObjectUnsubscribedError } from 'rxjs';
 import { Todo } from '../../shared/models/todo.model';
 import { Store, select } from '@ngrx/store';
 import * as todosAction from '../../shared/store/todos.actions'
-import { map } from 'rxjs/operators'
+import { v4 as uuid } from 'uuid';
+import { todoListSelector, selectedTodoSelector } from 'src/app/shared/store/selectors';
 
 @Component({
   selector: 'app-todo-list',
@@ -14,10 +15,12 @@ import { map } from 'rxjs/operators'
 export class TodoListComponent implements OnInit {
 
   public todos$: Observable<Todo[]> = this.store.pipe(
-    select('todos'),
-    map((todoState: TodoState) => todoState.data)
-  )
+    select(todoListSelector));
+   
+  public selectedTodo$: Observable<Todo> = this.store.pipe(select(selectedTodoSelector))
+  
   public message: string;
+  public selectedTodo: Todo;
  
   constructor(private store: Store<State>) {}
  
@@ -28,7 +31,7 @@ export class TodoListComponent implements OnInit {
  
   public addTodo() {
     this.store.dispatch(new todosAction.CreateTodo(
-      { message: this.message, done: false })
+      { message: this.message, done: false, id: uuid() })
      );
      this.message = '';
   }

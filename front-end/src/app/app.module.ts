@@ -33,6 +33,9 @@ import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router
         path: 'todo', component: TodoListComponent
       },
       {
+        path: 'todo/:id', component: TodoListComponent
+      },
+      {
         path: '', redirectTo: 'todo', pathMatch: 'full'
       }
     ]),

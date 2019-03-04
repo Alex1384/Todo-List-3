@@ -10,12 +10,18 @@ export class TodoService {
 
  public getTodos(): Observable<Todo[]> {
    return timer(2000).pipe(
-     map( () => [
-       {
-         message: 'Travailler',
-         done: false
-       }
-     ])
+    map( () => [
+      {
+        id: '1',
+        message: 'Travailler',
+        done: false
+      },
+      {
+        id: '2',
+        message: 'Film',
+        done: false
+      }
+    ])
    )
- }
+  }
 }
