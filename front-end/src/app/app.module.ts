@@ -7,6 +7,8 @@ import { TodoService } from './shared/services/todo.service';
 import { StoreModule } from '@ngrx/store'
 import { reducers } from './shared/store/todos.reducers'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
+import { EffectsModule } from '@ngrx/effects'
+import { TodosEffects } from './shared/store/todos.effects';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools'
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({
       name: 'to do'
-    })
+    }),
+    EffectsModule.forRoot([TodosEffects])
   ],
   providers: [TodoService],
   bootstrap: [AppComponent]

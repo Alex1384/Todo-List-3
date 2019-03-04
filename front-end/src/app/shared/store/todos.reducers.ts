@@ -3,35 +3,69 @@ import { Todo } from '../models/todo.model';
 import * as todosAction from './todos.actions'
 
 
+const initialState = {
+    data: null,
+    loading: false,
+    loaded: false,
+    error: null
+};
+
+
 export interface TodoState {
- datas: Todo[];
+    data: Todo[];
+    loading: boolean,
+    loaded: boolean,
+    error: any
 }
+
 
 export interface State {
  todos: TodoState;
 }
 
-export function todosReducer( state : TodoState = initialState, action: todosAction.TodosActionType ) : TodoState {
-  switch(action.type) {
-      case todosAction.TODO_CREATE:
+export function todosReducer( state: TodoState = initialState, action: todosAction.TodosActionType ): TodoState {
+    switch (action.type)  {
+        case todosAction.FETCH_TODO :
+        return {
+          ...state,
+          loading: true
+        };
+        case todosAction.FETCH_TODO_SUCCESS :
+        return {
+          ...state,
+          data: action.payload,
+          loading: false,
+          loaded: true,
+          error: null
+        };
+        case todosAction.FETCH_TODO_ERROR :
+        return {
+          ...state,
+          loading: false,
+          loaded: true,
+          error: action.payload
+        };
+      
+
+        case todosAction.TODO_CREATE:
         return {
             ...state,
-            datas: [...state.datas, action.payload]
+            data: [...state.data, action.payload]
         };
         case todosAction.TODO_DELETE :
-            return {
-                ...state,
-                datas: state.datas.filter ((t,i) => i !== action.payload)
-            };
+        return {
+            ...state,
+            data: state.data.filter ((t,i) => i !== action.payload)
+        };
 
         case todosAction.TODO_TOGGLE :
-                const selectedTodo = state.datas[action.payload]
+                const selectedTodo = state.data[action.payload]
                 selectedTodo.done = !selectedTodo.done;
-                const newTodos = [...state.datas];
+                const newTodos = [...state.data];
                 newTodos[action.payload] = selectedTodo;
                 return {
                     ...state,
-                    datas: newTodos
+                    data: newTodos
                 }
                 default:
             return state   
@@ -50,11 +84,3 @@ export const reducers: ActionReducerMap<State> = {
  todos: todosReducer
 };
 
-const initialState = {
-    datas: [
-      {
-        message: 'manger une pizza',
-        done: false
-      }
-    ]
-  };
