@@ -4,6 +4,9 @@ import { FlexLayoutModule } from '@angular/flex-layout'
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms'
 import { TodoService } from './shared/services/todo.service';
+import { StoreModule } from '@ngrx/store'
+import { reducers } from './shared/store/todos.reducers'
+import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 
 @NgModule({
   declarations: [
@@ -12,9 +15,15 @@ import { TodoService } from './shared/services/todo.service';
   imports: [
     BrowserModule,
     FlexLayoutModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({
+      name: 'to do'
+    })
   ],
   providers: [TodoService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+
+}
